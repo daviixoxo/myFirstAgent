@@ -1,6 +1,7 @@
 ---
 name: explicar-errores
 description: Explica un mensaje de error de código en lenguaje claro, identifica su causa y la registra en WORK-MEMORY/registro_errores.csv para detectar qué temas repasar. Use when the user pastes an error message, describes a bug, or asks what concept to review based on mistakes they keep making.
+allowed-tools: Read, Write, Edit
 ---
 
 Cuando se active esta skill:

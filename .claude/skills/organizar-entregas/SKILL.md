@@ -1,6 +1,7 @@
 ---
 name: organizar-entregas
 description: Revisa el estado de las entregas de los talleres y prioriza según fecha. Use when the user asks about deadlines, entregas pendientes, or qué hacer primero.
+allowed-tools: Read, Write
 ---
 
 Cuando se active esta skill:

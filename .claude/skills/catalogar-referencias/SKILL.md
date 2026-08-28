@@ -1,6 +1,7 @@
 ---
 name: catalogar-referencias
 description: Organiza referencias visuales recolectadas para un proyecto por tema o elemento que inspiran. Use when the user wants to organize, group, or make sense of collected visual references.
+allowed-tools: Read, Write
 ---
 
 Cuando se active esta skill:
