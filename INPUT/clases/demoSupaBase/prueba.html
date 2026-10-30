@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- fuente bubbly/redondeada para el look "web indie 2000s" -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- CDN: trae la librería de Supabase ANTES que nuestros propios
+       scripts — sin esta línea, "supabase.createClient" no existiría
+       todavía cuando supabaseClient.js intente usarlo -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="pagina-y2k">
+
+  <!-- navbar flotante: accesos rapidos a cada paso del CRUD, con vidrio
+       esmerilado para que se note que esta "flotando" sobre el fondo -->
+  <nav class="navbar-y2k">
+    <span class="navbar-y2k__logo">🪩 CRUD Supabase</span>
+    <div class="navbar-y2k__links">
+      <a href="#panel-crear" class="navbar-y2k__link" data-nav="crear">✚ Crear</a>
+      <a href="#panel-leer" class="navbar-y2k__link" data-nav="leer">👁️ Ver todo</a>
+      <a href="#panel-buscar" class="navbar-y2k__link" data-nav="buscar">🔍 Buscar</a>
+    </div>
+  </nav>
+
+  <!-- fondo decorativo: solo de ambiente, flota detras de toda la pagina -->
+  <div class="fondo-y2k" aria-hidden="true">
+    <span class="sticker-fondo" style="top:6%; left:4%;">⭐</span>
+    <span class="sticker-fondo" style="top:10%; right:7%;">🎀</span>
+    <span class="sticker-fondo" style="top:26%; left:88%;">🧋</span>
+    <span class="sticker-fondo" style="top:22%; left:2%;">🫧</span>
+    <span class="sticker-fondo" style="top:40%; right:4%;">🍓</span>
+    <span class="sticker-fondo" style="top:48%; left:6%;">📼</span>
+    <span class="sticker-fondo" style="top:58%; right:10%;">🧸</span>
+    <span class="sticker-fondo" style="top:66%; left:88%;">💌</span>
+    <span class="sticker-fondo" style="top:72%; left:3%;">🌈</span>
+    <span class="sticker-fondo" style="top:80%; right:6%;">🪩</span>
+    <span class="sticker-fondo" style="top:88%; left:12%;">🐾</span>
+    <span class="sticker-fondo" style="top:92%; right:30%;">✨</span>
+    <span class="sticker-fondo" style="top:34%; left:46%;">☁️</span>
+    <span class="sticker-fondo" style="top:95%; left:50%;">🍥</span>
+  </div>
+
+  <button id="btn-traer">Traer productos</button>
+  <div id="resultado"></div>
+   <div id="resultado2"></div>
+   <div id="precios"></div>
+   <div id="unidades"></div>
+
+  <button id="btn-agregar-obj">Agregar producto de prueba</button>
+
+   <div id="notificacion"></div>
+
+  <hr>
+
+  <!-- mismos campos que el objeto "productoNuevo" de prueba.js, pero
+       ahora llenados por quien use el formulario en vez de estar
+       escritos a mano en el codigo -->
+  <section id="panel-crear" class="panel-y2k panel-y2k--crear">
+
+    <span class="stamp-y2k stamp-y2k--verde">PASO 1<br>CREATE</span>
+
+    <!-- stickers decorativos, solo de adorno -->
+    <span class="sticker sticker--1" aria-hidden="true">✨</span>
+    <span class="sticker sticker--2" aria-hidden="true">💾</span>
+    <span class="sticker sticker--3" aria-hidden="true">🌸</span>
+    <span class="sticker sticker--4" aria-hidden="true">⭐</span>
+
+    <div class="burbuja-titulo">
+      <h3>Agregar producto <span class="subrayado">(desde formulario)</span></h3>
+    </div>
+
+    <form id="form-producto" class="form-y2k">
+      <div class="campo-y2k campo-y2k--rosa">
+        <label for="input-nombre">Nombre</label>
+        <input type="text" id="input-nombre" required>
+      </div>
+
+      <div class="campo-y2k campo-y2k--celeste">
+        <label for="input-descripcion">Descripción</label>
+        <input type="text" id="input-descripcion">
+      </div>
+
+      <div class="campo-y2k campo-y2k--lavanda">
+        <label for="input-precio">Precio</label>
+        <input type="number" id="input-precio" min="0" required>
+      </div>
+
+      <div class="campo-y2k campo-y2k--amarillo">
+        <label for="input-descuento">Descuento (0 a 1, ej: 0.2 = 20%)</label>
+        <input type="number" id="input-descuento" min="0" max="1" step="0.01" value="0">
+      </div>
+
+      <div class="campo-y2k campo-y2k--menta">
+        <label for="input-unidades">Unidades</label>
+        <input type="number" id="input-unidades" min="0" required>
+      </div>
+
+      <div class="campo-y2k campo-y2k--rosa">
+        <label for="input-categorias">Categorías (separadas por coma)</label>
+        <input type="text" id="input-categorias" placeholder="decoracion, ambiente">
+      </div>
+
+      <div class="campo-y2k campo-y2k--celeste">
+        <label for="input-image-url">URL de la imagen</label>
+        <input type="url" id="input-image-url" placeholder="https://...">
+      </div>
+
+      <div class="campo-y2k campo-y2k--lavanda campo-y2k--checkbox">
+        <label>
+          <input type="checkbox" id="input-disponible" checked>
+          Disponible
+        </label>
+      </div>
+
+      <button type="submit" class="btn-y2k">Agregar producto ♡</button>
+    </form>
+
+    <p id="mensaje-formulario" class="mensaje-y2k"></p>
+
+  </section>
+
+  <!-- READ del CRUD: trae todos los productos y los pinta como cards -->
+  <section id="panel-leer" class="panel-y2k panel-y2k--leer panel-lectura">
+
+    <span class="stamp-y2k stamp-y2k--celeste">PASO 2<br>READ</span>
+
+    <span class="sticker sticker--1" aria-hidden="true">🛍️</span>
+    <span class="sticker sticker--2" aria-hidden="true">🌟</span>
+    <span class="sticker sticker--3" aria-hidden="true">🧁</span>
+    <span class="sticker sticker--4" aria-hidden="true">💿</span>
+
+    <div class="burbuja-titulo">
+      <h3>Todos los productos <span class="subrayado">(READ)</span></h3>
+    </div>
+
+    <button type="button" id="btn-ver-productos" class="btn-y2k">Ver todos los productos 🛍️</button>
+
+    <p id="mensaje-productos" class="mensaje-y2k"></p>
+
+    <div id="grid-productos" class="grid-productos-y2k"></div>
+
+  </section>
+
+  <!-- READ filtrado: buscar un producto puntual por ID o por nombre,
+       usando buscarProductoPorId() y buscarProductosPorNombre() de prueba.js -->
+  <section id="panel-buscar" class="panel-y2k panel-y2k--buscar panel-busqueda">
+
+    <span class="stamp-y2k stamp-y2k--lavanda">PASO 3<br>READ+</span>
+
+    <span class="sticker sticker--1" aria-hidden="true">🔍</span>
+    <span class="sticker sticker--2" aria-hidden="true">🧁</span>
+    <span class="sticker sticker--3" aria-hidden="true">🎈</span>
+    <span class="sticker sticker--4" aria-hidden="true">🔖</span>
+
+    <div class="burbuja-titulo">
+      <h3>Buscar productos <span class="subrayado">(READ filtrado)</span></h3>
+    </div>
+
+    <div class="buscador-y2k">
+      <div class="buscador-y2k__grupo">
+        <label for="input-buscar-id">Buscar por ID</label>
+        <div class="buscador-y2k__fila">
+          <input type="number" id="input-buscar-id" min="1" placeholder="Ej: 4">
+          <button type="button" id="btn-buscar-id" class="btn-y2k btn-y2k--chico">Buscar 🔍</button>
+        </div>
+      </div>
+
+      <div class="buscador-y2k__grupo">
+        <label for="input-buscar-nombre">Buscar por nombre</label>
+        <div class="buscador-y2k__fila">
+          <input type="text" id="input-buscar-nombre" placeholder="Ej: reloj">
+          <button type="button" id="btn-buscar-nombre" class="btn-y2k btn-y2k--chico">Buscar 🔍</button>
+        </div>
+      </div>
+    </div>
+
+    <p id="mensaje-busqueda" class="mensaje-y2k"></p>
+
+    <div id="grid-busqueda" class="grid-productos-y2k"></div>
+
+  </section>
+
+  <!-- UPDATE del CRUD: modal que se abre al apretar "Editar" en una card.
+       Usa modificarProducto(id, cambios) de prueba.js -->
+  <div id="modal-editar" class="modal-overlay-y2k">
+    <div class="modal-y2k">
+
+      <button type="button" id="cerrar-modal-editar" class="modal-y2k__cerrar" aria-label="Cerrar">✕</button>
+
+      <span class="stamp-y2k stamp-y2k--naranja">PASO 4<br>UPDATE / DELETE</span>
+
+      <div class="burbuja-titulo">
+        <h3>Editar producto <span class="subrayado">(UPDATE)</span></h3>
+      </div>
+
+      <!-- guarda el id del producto que se esta editando -->
+      <form id="form-editar" class="form-y2k">
+        <input type="hidden" id="editar-id">
+
+        <div class="campo-y2k campo-y2k--rosa">
+          <label for="editar-nombre">Nombre</label>
+          <input type="text" id="editar-nombre" required>
+        </div>
+
+        <div class="campo-y2k campo-y2k--celeste">
+          <label for="editar-descripcion">Descripción</label>
+          <input type="text" id="editar-descripcion">
+        </div>
+
+        <div class="campo-y2k campo-y2k--lavanda">
+          <label for="editar-precio">Precio</label>
+          <input type="number" id="editar-precio" min="0" required>
+        </div>
+
+        <div class="campo-y2k campo-y2k--amarillo">
+          <label for="editar-descuento">Descuento (0 a 1)</label>
+          <input type="number" id="editar-descuento" min="0" max="1" step="0.01">
+        </div>
+
+        <div class="campo-y2k campo-y2k--menta">
+          <label for="editar-unidades">Unidades</label>
+          <input type="number" id="editar-unidades" min="0" required>
+        </div>
+
+        <div class="campo-y2k campo-y2k--rosa">
+          <label for="editar-categorias">Categorías (separadas por coma)</label>
+          <input type="text" id="editar-categorias">
+        </div>
+
+        <div class="campo-y2k campo-y2k--celeste">
+          <label for="editar-image-url">URL de la imagen</label>
+          <input type="url" id="editar-image-url">
+        </div>
+
+        <div class="campo-y2k campo-y2k--lavanda campo-y2k--checkbox">
+          <label>
+            <input type="checkbox" id="editar-disponible">
+            Disponible
+          </label>
+        </div>
+
+        <div class="modal-y2k__acciones">
+          <button type="submit" class="btn-y2k">Guardar cambios ✓</button>
+          <!-- type="button": no tiene que disparar el submit del form, solo el DELETE -->
+          <button type="button" id="btn-eliminar-editar" class="btn-y2k btn-y2k--peligro">🗑️ Eliminar producto</button>
+        </div>
+      </form>
+
+      <p id="mensaje-editar" class="mensaje-y2k"></p>
+
+    </div>
+  </div>
+
+  <!-- supabaseClient.js crea "db" (sección 4.3): el cliente ya
+       conectado a tu proyecto de Supabase. Lo vamos a usar en
+       prueba.js, por eso tiene que cargarse ANTES que ese archivo -->
+  <script src="js/supabaseClient.js"></script>
+  <!-- prueba.js: aquí escribes el código de los Pasos 2, 3 y 4 -->
+  <script src="js/prueba.js"></script>
+</body>
+</html>

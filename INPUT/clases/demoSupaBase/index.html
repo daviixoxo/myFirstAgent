@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Supabase — Gestor de Tareas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <h1>📋 Gestor de Tareas</h1>
+    <p>Demo de conexión con Supabase — CRUD completo (Crear, Leer, Actualizar, Eliminar)</p>
+  </header>
+
+  <main class="contenido">
+
+    <section class="panel panel-formulario">
+      <h2>Nueva tarea</h2>
+
+      <form id="form-tarea">
+        <label class="campo">
+          <span>Título *</span>
+          <input type="text" id="input-titulo" required placeholder="Ej: Repasar JavaScript">
+        </label>
+
+        <label class="campo">
+          <span>Descripción</span>
+          <textarea id="input-descripcion" rows="2" placeholder="Detalles (opcional)"></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-primario">Agregar tarea</button>
+      </form>
+
+      <p id="mensaje-formulario" class="mensaje"></p>
+    </section>
+
+    <section class="panel panel-lista">
+      <h2>Mis tareas</h2>
+
+      <p id="mensaje-lista" class="mensaje">Cargando tareas...</p>
+
+      <ul id="lista-tareas" class="lista-tareas"></ul>
+    </section>
+
+  </main>
+
+  <footer class="pie">
+    <p>Hecho con HTML, CSS y JS vanilla + Supabase.</p>
+  </footer>
+
+  <!-- 1° el SDK de supabase desde CDN: crea la variable global "supabase" -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 2° crea el cliente usando la URL y la anon key de TU proyecto -->
+  <script src="js/supabaseClient.js"></script>
+  <!-- 3° funciones que hablan directo con la base de datos (CRUD) -->
+  <script src="js/datos.js"></script>
+  <!-- 4° maneja el DOM: formulario, lista, botones -->
+  <script src="js/gestion.js"></script>
+</body>
+</html>
